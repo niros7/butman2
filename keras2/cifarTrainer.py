@@ -1,6 +1,8 @@
 from data import Data
 from plotLoss import PlotLosses
 from keras.callbacks import ModelCheckpoint
+import pickle
+
 
 class cifarTrainer(object):
     def trainModel(self, model, classes, batch_size, epochs, model_name):
@@ -17,14 +19,17 @@ class cifarTrainer(object):
                                        verbose=1,
                                        save_best_only=True)
 
-        model.fit(x_train, y_train,  # this is our training examples & labels
-                  batch_size=batch_size,
-                  epochs=epochs,
-                  validation_split=0.1,  # this parameter control the % of train data used for validation
-                  shuffle=True,
-                  callbacks=[plot_losses, checkpointer])  # thi
-        return model
+        history = model.fit(x_train, y_train,  # this is our training examples & labels
+                            batch_size=batch_size,
+                            epochs=epochs,
+                            validation_split=0.1,  # this parameter control the % of train data used for validation
+                            shuffle=True,
+                            callbacks=[plot_losses, checkpointer])
 
+        with open('models_checkpoint/history/%s' % model_name, 'wb') as file_pi:
+            pickle.dump(history.history, file_pi)
+
+        return model
 
     def evalModel(self, model, classes):
         data = Data(classes).Data
