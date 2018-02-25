@@ -56,3 +56,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+keras2/flowers images/
+
+keras2/models_checkpoint/second\.hdf5
