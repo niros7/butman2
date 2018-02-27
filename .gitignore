@@ -60,3 +60,11 @@ target/
 keras2/flowers images/
 
 keras2/models_checkpoint/second\.hdf5
+
+final/Test/
+
+final/Train/
+
+matala3/data/large/
+
+matala3/data/small/

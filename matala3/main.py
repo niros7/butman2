@@ -1,7 +1,10 @@
 from models.super_resolution import create_model
 from keras.layers import Input
 
+# create model
+input_shape = [32, 32, 1]
+scale = 3
 
+sr_model = create_model(input_shape, scale)
 
-
-sr_model = create_model(Input((32, 32, 3)), (96, 96, 3))
+# pre process data
