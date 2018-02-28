@@ -53,5 +53,5 @@ def create_model(input_shape, scale):
 
     model = Model([y_img_input, multi_channel_bicubic_input], output)
     adam = optimizers.Adam(beta_1=0.1, beta_2=0.1)
-    model.compile(optimizer=adam, loss="mse")
+    model.compile(optimizer=adam, loss="mse", metrics=[PSNRLoss])
     return model
