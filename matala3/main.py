@@ -88,7 +88,7 @@ scale = 3
 
 sr_model = create_model(input_shape, scale)
 
-batch_size = 5
+batch_size = 10
 itr = int(len(x_train) / batch_size)
 print(itr)
 history = []
@@ -104,11 +104,10 @@ for epoch in range(0, 10):
         y = np.array(y_train[batch_start:batch_end])
 
         loss = sr_model.train_on_batch([x, x_bicubic], y)
-        print(loss)
         history.append(loss)
-    scores = sr_model.evaluate([x_eval, x_bicubic_eval], y_eval)
-    print('==> Test loss:', scores)
-
+    # scores = sr_model.evaluate([x_eval, x_bicubic_eval], y_eval)
+    # print('==> Test loss:', scores)
+    print(history[-1])
 sr_model.save("models_checkpoint/sr".format(datetime.datetime.now()))
 with open('models_checkpoint/history/sr_history', 'wb') as file_pi:
     pickle.dump(history, file_pi)

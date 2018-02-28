@@ -5,7 +5,6 @@ from keras.layers.convolutional import Convolution2D
 from keras.models import Model
 from keras.regularizers import l2
 
-
 def PSNRLoss(y_true, y_pred):
     return -10. * K.log(K.mean(K.square(y_pred - y_true))) / K.log(10.)
 
