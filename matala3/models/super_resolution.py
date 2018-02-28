@@ -1,10 +1,9 @@
-from keras.models import Model
-from keras.layers import add, Input, PReLU, Dropout, concatenate, Lambda
-from keras.layers.convolutional import Convolution2D, MaxPooling2D, UpSampling2D
-from keras import backend as K
 import keras.optimizers as optimizers
+from keras import backend as K
+from keras.layers import add, Input, PReLU, Dropout, concatenate
+from keras.layers.convolutional import Convolution2D
+from keras.models import Model
 from keras.regularizers import l2
-from utils import resize_image_by_pil, compute_mse
 
 
 def PSNRLoss(y_true, y_pred):
@@ -12,15 +11,13 @@ def PSNRLoss(y_true, y_pred):
 
 
 def create_conv2d(prev_layer, filters_size, kernel_size, dropout_rate):
-    layer = Convolution2D(filters_size, kernel_size, activation=PReLU("he_normal"),
+    layer = Convolution2D(filters_size, kernel_size,
                           padding='same', use_bias=True, kernel_regularizer=l2(0.0001))(prev_layer)
-    layer = Dropout(dropout_rate)(layer)
+    layer = PReLU()(layer)
+    if dropout_rate is not 0:
+        layer = Dropout(dropout_rate)(layer)
     return layer
 
-
-def costum_loss(y_true, y_pred):
-
-    return compute_mse()
 
 def create_model(input_shape, scale):
     channels = scale * scale
@@ -55,7 +52,6 @@ def create_model(input_shape, scale):
     output = add([l, multi_channel_bicubic_input])
 
     model = Model([y_img_input, multi_channel_bicubic_input], output)
-    adam = optimizers.Adam(beta_1=0.1, beta_2=0.1, decay=0.5)
-    model.compile(optimizer=adam, loss='mse', metrics=[PSNRLoss])
-    print(model.summary())
+    adam = optimizers.Adam(beta_1=0.1, beta_2=0.1)
+    model.compile(optimizer=adam, loss="mse")
     return model

@@ -53,7 +53,7 @@ datagen = ImageDataGenerator(
 # Generate training data
 
 
-batch_size = 128
+batch_size = 256
 
 
 def image_a_b_gen(batch_size):
